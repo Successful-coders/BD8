@@ -95,61 +95,6 @@ namespace BD_BR5
             connection.Close();
 
         }
-        protected void Button2_Click(object sender, EventArgs e)
-        {
-            //создание объекта подключения и ODBC-источник
-            OdbcConnection connection = new OdbcConnection(@"Dsn=PostgreSQL30");
-            connection.Open();
-
-            //текст запроса
-            string request = "insert into pmib8502.r values('E'||trim(to_char(nextval('pmib8502.table_izd_seq'),'99999')), ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            //"create sequence table_izd_seq increment by 1 start with 14;
-            using (OdbcCommand command = new OdbcCommand(request, connection))
-            {
-                string zak = DropDownList1.SelectedValue;
-                string izd = RadioButtonList2.SelectedValue;
-                string cl = RadioButtonList3.SelectedValue;
-                string date_order = TextBox1.Text;
-                string date_pay = TextBox2.Text;
-                string date_shiping = TextBox3.Text;
-                string kol = TextBox4.Text;
-                string cost = TextBox5.Text;
-
-                //параметры
-                command.Parameters.AddWithValue("@zak", zak);
-                command.Parameters.AddWithValue("@izd", izd);
-                command.Parameters.AddWithValue("@cl", cl);
-                command.Parameters.AddWithValue("@date_order", date_order);
-                command.Parameters.AddWithValue("@date_pay", date_pay);
-                command.Parameters.AddWithValue("@date_shiping", date_shiping);
-                command.Parameters.AddWithValue("@kol", Int32.Parse(kol));
-                command.Parameters.AddWithValue("@cost", Int32.Parse(cost));
-                //объявление объекта транзакции
-                OdbcTransaction tx = null;
-
-                try
-                {
-                    //созданиетранзакции и извлечение объекта транзакции из объекта подключения
-                    tx = connection.BeginTransaction();
-                    //включаем объект SQL-команды в транзакцию
-                    command.Transaction = tx;
-                    // выполняем SQL- команду и получаем количество обработанных записей
-                    int i = command.ExecuteNonQuery();
-                    //подтверждение транзакции
-                    tx.Commit();
-                    //сообщение об успешности транзакции и количестве обработанных записей
-                    Label1.Text = "2 Транзакция успешно завершена. Записей обработано: " + i.ToString() + ".\n";
-                    if (i == 0) Label1.Text += "Запрос - пуст.\n";
-                }
-                catch (Exception exec)
-                {
-                    //сообщение об ошибке + текст ошибки
-                    Label1.Text = "2 Транзакция не завершена. Ошибка: " + exec.Message + ".\n";
-                    //откат транзакции
-                    tx.Rollback();
-                }
-            }
-        }
+        
     }
 }
