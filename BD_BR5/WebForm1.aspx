@@ -34,9 +34,9 @@
         <asp:GridView ID="GridView1" runat="server" Height="131px" Width="555px">
         </asp:GridView>
         <br />
-        Укажите изделие:<asp:RadioButtonList ID="RadioButtonList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="name" DataValueField="n_izd">
+        Укажите изделие:<asp:RadioButtonList ID="RadioButtonList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="concat" DataValueField="n_izd">
         </asp:RadioButtonList>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString.ProviderName %>" SelectCommand="SELECT n_izd, name FROM pmib8502.j"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString.ProviderName %>" SelectCommand="SELECT n_izd,concat(name,'-',town) FROM pmib8502.j"></asp:SqlDataSource>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="RadioButtonList1" ErrorMessage="Выберите изделие!" BackColor="#FF3300"></asp:RequiredFieldValidator>
         <p>
             <asp:Button ID="Button1" runat="server" Height="68px" OnClick="Button1_Click" Text="Выполнить запрос" Width="160px" />

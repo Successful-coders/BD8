@@ -13,6 +13,40 @@ namespace BD_BR5
         protected void Page_Load(object sender, EventArgs e)
         {
             ValidationSettings.UnobtrusiveValidationMode = UnobtrusiveValidationMode.None;
+            //создание объекта подключения и ODBC-источник
+            OdbcConnection connection = new OdbcConnection(@"Dsn=PostgreSQL30");
+            connection.Open();
+            //текст запроса
+            string seq_req = "select setval('pmib8502.izd_seq', count(*)) from pmib8502.r";
+            using (OdbcCommand command = new OdbcCommand(seq_req, connection))
+            {
+                //объявление объекта транзакции
+                OdbcTransaction tx = null;
+
+                try
+                {
+                    //созданиетранзакции и извлечение объекта транзакции из объекта подключения
+                    tx = connection.BeginTransaction();
+                    //включаем объект SQL-команды в транзакцию
+                    command.Transaction = tx;
+                    // выполняем SQL- команду и получаем количество обработанных записей
+                    int i = command.ExecuteNonQuery();
+                    //подтверждение транзакции
+                    tx.Commit();
+                    //сообщение об успешности транзакции и количестве обработанных записей
+                    Label1.Text = "Транзакция успешно завершена. Записей обработано: " + i.ToString() + ".\n";
+                    if (i == 0) Label1.Text += "Запрос - пуст.\n";
+                }
+                catch (Exception exec)
+                {
+                    //сообщение об ошибке + текст ошибки
+                    Label1.Text = "Транзакция не завершена. Ошибка: " + exec.Message + ".\n";
+                    //откат транзакции
+                    tx.Rollback();
+                }
+
+            }
+
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -23,12 +57,12 @@ namespace BD_BR5
             connection.Open();
 
             //текст запроса
-            string request = "insert into pmib8502.r values(?, ?, ?, ?, ?, ?, ?, ?)";
+            string request = "insert into pmib8502.r values('R'||trim(to_char(nextval('pmib8502.izd_seq'),'99999')), ?, ?, ?, ?, ?, ?, ?)";
 
-            //"create sequence table_izd_seq increment by 1 start with 14;
+            
             using (OdbcCommand command = new OdbcCommand(request, connection))
             {
-                string zak = DropDownList1.SelectedValue;
+                
                 string izd = RadioButtonList2.SelectedValue.Replace(" ", "");
                 string cl = RadioButtonList3.SelectedValue.Replace(" ", "");
                 string date_order = TextBox1.Text;
@@ -37,8 +71,7 @@ namespace BD_BR5
                 string kol = TextBox4.Text;
                 string cost = TextBox5.Text;
 
-                //параметры
-                command.Parameters.AddWithValue("@zak", zak);
+                //параметр
                 command.Parameters.AddWithValue("@izd", izd);
                 command.Parameters.AddWithValue("@cl", cl);
                 command.Parameters.AddWithValue("@date_order", date_order);

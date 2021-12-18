@@ -14,22 +14,17 @@
             <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/WebForm1.aspx">Перейти к 1 запросу</asp:HyperLink>
             <br />
             Вставить заказ с указанными параметрами.&nbsp;&nbsp;&nbsp; </div>
-        Номер заказа:<br />
-        <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource3" DataTextField="n" DataValueField="n" Height="35px" Width="166px">
-        </asp:DropDownList>
         <br />
-        <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString3 %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString3.ProviderName %>" SelectCommand="select CONCAT('R',count(n_real)+1) as n 
-from pmib8502.r"></asp:SqlDataSource>
         <br />
-        Укажите изделие:<asp:RadioButtonList ID="RadioButtonList2" runat="server" DataSourceID="SqlDataSource2" DataTextField="name" DataValueField="n_izd">
+        Укажите изделие:<asp:RadioButtonList ID="RadioButtonList2" runat="server" DataSourceID="SqlDataSource2" DataTextField="concat" DataValueField="n_izd">
         </asp:RadioButtonList>
-        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString.ProviderName %>" SelectCommand="SELECT n_izd, name FROM pmib8502.j"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString.ProviderName %>" SelectCommand="SELECT n_izd, concat(name,'-',town) FROM pmib8502.j"></asp:SqlDataSource>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="RadioButtonList2" ErrorMessage="Выберите изделие!" BackColor="#FF3300"></asp:RequiredFieldValidator>
         <br />
         <br />
-        Укажите клиента<asp:RadioButtonList ID="RadioButtonList3" runat="server" DataSourceID="SqlDataSource4" DataTextField="name" DataValueField="n_cl">
+        Укажите клиента<asp:RadioButtonList ID="RadioButtonList3" runat="server" DataSourceID="SqlDataSource4" DataTextField="concat" DataValueField="n_cl">
         </asp:RadioButtonList>
-        <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString4 %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString4.ProviderName %>" SelectCommand="SELECT n_cl, name from pmib8502.c
+        <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:studentsConnectionString4 %>" ProviderName="<%$ ConnectionStrings:studentsConnectionString4.ProviderName %>" SelectCommand="SELECT n_cl, concat(name,'-',town) from pmib8502.c
 "></asp:SqlDataSource>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="RadioButtonList3" ErrorMessage="Выберите клиента!" BackColor="#FF3300"></asp:RequiredFieldValidator>
         <br />
